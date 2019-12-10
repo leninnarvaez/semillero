@@ -1,1 +1,18 @@
 Lenin Narvaez Martinez - Cerete
+<br>
+
+<p>{{listaObjeto}}</p>
+
+<br>
+<button (click) = "eliminarItemComic(3)" type="button" class="btn btn-primary" >Eliminar el indice 3</button>
+<br>
+
+<div *ngIf="verMensaje">
+    <p > {{ mensaje }} </p>
+</div>
+
+<div *ngIf="mensajeError"> 
+    <p >El elemento ya ha sido eliminado liminado <p>
+</div>
+
+
