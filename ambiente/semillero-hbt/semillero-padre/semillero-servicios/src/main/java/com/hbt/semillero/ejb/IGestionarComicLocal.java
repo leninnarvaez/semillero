@@ -1,5 +1,6 @@
 package com.hbt.semillero.ejb;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -65,4 +66,8 @@ public interface IGestionarComicLocal {
 	 * @return
 	 */
 	public List<ComicDTO> consultarComics();
+	
+	public BigDecimal calcularPrecioTotal();
+	
+	
 }

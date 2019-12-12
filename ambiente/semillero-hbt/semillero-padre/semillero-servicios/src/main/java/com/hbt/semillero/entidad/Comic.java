@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * <b>Descripción:<b> Clase que determina la entidad que permite representar la
@@ -46,7 +47,14 @@ public class Comic implements Serializable {
 	private Boolean color;
 	private LocalDate fechaVenta;
 	private EstadoEnum estadoEnum;
-	private Long cantidad;
+	private Long cantidad;		
+	
+
+	@Transient
+	private BigDecimal precioTotal;
+		
+	@Transient
+	private BigDecimal iva;
 
 	/**
 	 * Constructor de la clase.
@@ -132,6 +140,9 @@ public class Comic implements Serializable {
 	 * @param tematica El nuevo tematica a modificar.
 	 */
 	public void setTematicaEnum(TematicaEnum tematicaEnum) {
+		//if(getTematicaEnum() == tematicaEnum.AVENTURAS); 
+				
+		
 		this.tematicaEnum = tematicaEnum;
 	}
 
@@ -284,9 +295,62 @@ public class Comic implements Serializable {
 	 * 
 	 * @param cantidad El nuevo cantidad a modificar.
 	 */
+	
 	public void setCantidad(Long cantidad) {
 		this.cantidad = cantidad;
 	}
+	
+	//----------------------------------------
+	@Transient 
+	public BigDecimal getPrecioTotal() {
+		return precioTotal;
+	}
+	
+	public void setPrecioTotal(BigDecimal precioTotal) {
+		
+		if(getTematicaEnum() == tematicaEnum.AVENTURAS || getTematicaEnum() == tematicaEnum.FANTASTICO || getTematicaEnum() == tematicaEnum.HISTORICO) {
+			setIva(new BigDecimal("0,05"));
+			BigDecimal ivaComic = getPrecio().multiply(getIva());
+			precioTotal = ivaComic.add(getPrecio());
+			this.precioTotal = precioTotal;
+		}
+		
+		if(getTematicaEnum() == tematicaEnum.BELICO || getTematicaEnum() == tematicaEnum.CIENCIA_FICCION || getTematicaEnum() == tematicaEnum.HORROR) {
+			setIva(new BigDecimal("0,16"));
+			BigDecimal ivaComic = getPrecio().multiply(getIva());
+			precioTotal = ivaComic.add(getPrecio());
+			this.precioTotal = precioTotal;
+		}
+		if(getTematicaEnum() == tematicaEnum.DEPORTIVO) {
+			setIva(new BigDecimal("0,10"));
+			BigDecimal ivaComic = getPrecio().multiply(getIva());
+			precioTotal = ivaComic.add(getPrecio());
+			this.precioTotal = precioTotal;
+		}
+	}
+	//---------------------------------------------
+	/**
+//	@Column(name = "SCPRECIOTOTAL")
+	public BigDecimal getPrecioTotal() {
+		return precioTotal;
+	}
+/**
+	public void setPrecioTotal(BigDecimal precioTotal) {
+		//if(toString(getTematicaEnum()) == "AVENTURAS");
+		BigDecimal iva1 = new BigDecimal("0,19");
+		precioTotal = getPrecio().multiply(iva1);
+		this.precioTotal = precioTotal;
+	}
+*/
+	@Transient 
+	public BigDecimal getIva() {
+		return iva;
+	}
+
+	public void setIva(BigDecimal iva) {
+		this.iva = iva;
+	}
+	
 
 	/**
 	 * @see java.lang.Object#toString() Metodo que permite asociar al objeto un
@@ -295,9 +359,9 @@ public class Comic implements Serializable {
 	@Override
 	public String toString() {
 		return "Comic [id=" + id + ", nombre=" + nombre + ", editorial=" + editorial + ", tematica=" + tematicaEnum
-				+ ", coleccion=" + coleccion + ", numeroPaginas=" + numeroPaginas + ", precio=" + precio + ", autores="
+				+ ", coleccion=" + coleccion + ", numeroPaginas=" + numeroPaginas + ", precioLENIN=" + precio + ", autores="
 				+ autores + ", color=" + color + ", fechaVenta=" + fechaVenta + ", estado=" + estadoEnum + ", cantidad="
-				+ cantidad + "]";
+				+ cantidad + ", precioTotal=" + precioTotal + "]";
 	}
 
 	/**
@@ -323,6 +387,7 @@ public class Comic implements Serializable {
 		result = prime * result + ((numeroPaginas == null) ? 0 : numeroPaginas.hashCode());
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
 		result = prime * result + ((tematicaEnum == null) ? 0 : tematicaEnum.hashCode());
+		result = prime * result + ((precioTotal == null) ? 0 : precioTotal.hashCode());
 		return result;
 	}
 
@@ -399,7 +464,11 @@ public class Comic implements Serializable {
 				return false;
 		} else if (!tematicaEnum.equals(other.tematicaEnum))
 			return false;
+		if (precioTotal == null) {
+			return false;
+		}
 		return true;
 	}
+
 
 }

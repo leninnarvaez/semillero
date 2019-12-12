@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import com.hbt.semillero.dto.CalcularIva;
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.PersonajeDTO;
 import com.hbt.semillero.entidad.Comic;
@@ -31,13 +32,12 @@ import com.hbt.semillero.entidad.Personaje;
 @Stateless
 public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 
+	final static Logger logger = Logger.getLogger(GestionarPersonajeBean.class);
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	
-	private static final Logger logger = Logger.getLogger(GestionarPersonajeBean.class);
-	
-
 	/**
 	 * 
 	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#crearPersonaje()
@@ -129,6 +129,7 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 		logger.debug("fin del metodo ConsularPersonaje");
 		return listaPersonajesDTO;
 	}
+		
 	
 	/**
  	 * Metodo encargado de transformar un personaje a un personajecDTO
@@ -164,6 +165,18 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 		PersonajeDTO.setEstado(personaje.getEstado());
 		PersonajeDTO.setSuperPoder(personaje.getSuperPoder());
 		return PersonajeDTO;
+	}
+	
+	
+	@Override
+	public double defaultMethod() {
+		
+		CalcularIva cIva = new CalcularIva();
+		cIva.setPrecio(5000);
+		double valorIva = cIva.getPrecio();
+		logger.debug("El valor de Iva es: " + valorIva);
+		
+		return valorIva;
 	}
 
 }

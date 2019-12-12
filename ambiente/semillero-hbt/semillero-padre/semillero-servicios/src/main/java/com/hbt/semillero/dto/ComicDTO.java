@@ -32,6 +32,8 @@ public class ComicDTO implements Serializable {
 	private LocalDate fechaVenta;
 	private EstadoEnum estadoEnum;
 	private Long cantidad;
+	private BigDecimal precioTotal;
+	private BigDecimal iva;
 
 	/**
 	 * Metodo encargado de retornar el valor del atributo id
@@ -247,6 +249,24 @@ public class ComicDTO implements Serializable {
 	 */
 	public void setCantidad(Long cantidad) {
 		this.cantidad = cantidad;
+	}
+	
+	
+
+	public BigDecimal getPrecioTotal() {
+		return precioTotal;
+	}
+
+	public void setPrecioTotal(BigDecimal precioTotal) {
+		this.precioTotal = precioTotal;
+	}
+
+	public BigDecimal getIva() {
+		return iva;
+	}
+
+	public void setIva(BigDecimal iva) {
+		this.iva = iva;
 	}
 
 	/**

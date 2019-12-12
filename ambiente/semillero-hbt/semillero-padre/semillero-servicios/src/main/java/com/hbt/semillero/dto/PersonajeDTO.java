@@ -17,6 +17,9 @@ public class PersonajeDTO implements Serializable{
 	/**
 	 * Atributo que determina
 	 */
+
+	
+	
 	
 	private long id;
 	private String nombre;

@@ -26,7 +26,7 @@ import com.hbt.semillero.ejb.IGestionarPersonajeLocal;
  */
 
 
-@Path("/GestionarPersonaje2")
+@Path("/GestionarPersonaje")
 public class GestionarPersonajesRest {
 	
 	/**
@@ -79,6 +79,13 @@ public class GestionarPersonajesRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<PersonajeDTO> consultaPersonaje(@QueryParam("idComic") long idComic){
 		return gestionarPersonajeBean.consultarPersonajes(idComic);
+	}
+	
+	@GET
+	@Path("/consultarDefault")
+	@Produces(MediaType.APPLICATION_JSON)
+	public double consultarDefault() {
+		return gestionarPersonajeBean.defaultMethod();
 	}
 
 }

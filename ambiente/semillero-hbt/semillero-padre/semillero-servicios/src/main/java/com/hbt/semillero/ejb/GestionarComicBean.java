@@ -3,6 +3,7 @@
  */
 package com.hbt.semillero.ejb;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +110,11 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		}
 		return resultadosComicDTO;
 	}
+	
+	public BigDecimal calcularPrecioTotal() {
+		BigDecimal pTotal;
+		return new BigDecimal("0");
+	}
 
 	/**
 	 * 
@@ -133,6 +139,8 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		comicDTO.setFechaVenta(comic.getFechaVenta());
 		comicDTO.setEstadoEnum(comic.getEstadoEnum());
 		comicDTO.setCantidad(comic.getCantidad());
+		comicDTO.setPrecio(comic.getPrecioTotal());
+		comicDTO.setIva(comic.getIva());
 		return comicDTO;
 	}
 
@@ -159,6 +167,8 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		comic.setFechaVenta(comicDTO.getFechaVenta());
 		comic.setEstadoEnum(comicDTO.getEstadoEnum());
 		comic.setCantidad(comicDTO.getCantidad());
+		comic.setPrecio(comicDTO.getPrecioTotal());
+		comic.setIva(comicDTO.getIva());
 		return comic;
 	}
 }

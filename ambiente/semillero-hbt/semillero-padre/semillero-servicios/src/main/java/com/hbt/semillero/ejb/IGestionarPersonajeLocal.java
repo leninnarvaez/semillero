@@ -72,4 +72,8 @@ public interface IGestionarPersonajeLocal {
 	public List<PersonajeDTO> consultarPersonajes(Long idComic);
 	
 	
+	default double defaultMethod() {
+		System.out.println("Interface A Default Method");
+		return 0;
+	}
 }
