@@ -1,8 +1,11 @@
 
 import { ComicDTO } from '../../dto/comic.dto';
+//import { VerComicComponent } from '../../verComic/ver-comic-component';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { VerComicComponent } from '../verComic/ver-comic-component';
+
 
 /**
  * @description Componenete gestionar comic, el cual contiene la logica CRUD
@@ -27,9 +30,25 @@ export class GestionarComicComponent implements OnInit {
     public comic: ComicDTO;
 
     /**
+     * Atributo boton crear comic que nos permitira mostrar u ocultar el boton
+     */
+
+    public botonCrearComic: boolean;
+
+    /**
+     * Atributo boton actualizar que nos permitira mostrar u ocultar el boton
+     */
+
+    public botonActualizarComic: boolean;
+
+    /**
      * Atributo que contendra la lista de comics creados
      */
     public listaComics : Array<ComicDTO>;
+
+    /**
+     * Atributo que inicia el idComic en 0
+     */
 
     public idComic : number = 0;
 
@@ -42,9 +61,11 @@ export class GestionarComicComponent implements OnInit {
      * @description Este es el constructor del componente GestionarComicComponent
      * @author Diego Fernando Alvarez Silva <dalvarez@heinsohn.com.co>
      */
+    
     constructor(private fb : FormBuilder,
         private router : Router) {
         this.gestionarComicForm = this.fb.group({
+            id : [null],
             nombre : [null, Validators.required],
             editorial : [null],
             tematica : [null],
@@ -63,7 +84,9 @@ export class GestionarComicComponent implements OnInit {
     ngOnInit(): void {
         console.log("Ingreso al al evento oninit");
         this.comic = new ComicDTO();
-        this.listaComics = new Array<ComicDTO>();
+        //this.consultarComic1 = new VerComicComponent();
+        this.listaComics = new Array<ComicDTO>();        
+        this.botonCrearComic = true;
     }
 
     /**
@@ -84,17 +107,23 @@ export class GestionarComicComponent implements OnInit {
         this.comic.numeroPaginas = this.gestionarComicForm.controls.numeroPaginas.value;
         this.comic.precio = this.gestionarComicForm.controls.precio.value;
         this.comic.autores = this.gestionarComicForm.controls.autores.value;
-        this.comic.color = this.gestionarComicForm.controls.color.value;
-        
+        this.comic.color = this.gestionarComicForm.controls.color.value;        
         this.listaComics.push(this.comic);
-        this.limpiarFormulario();
-        
+        this.limpiarFormulario();        
+    }
+
+    //Metodo para navegar al componente ver comic
+
+    public mostrarComic(comic: ComicDTO): void {
+        this.router.navigate(['ver-comic', comic]);
     }
 
     /**
      * Metodo que permite consultar un comic de la tabla y sus detalles e inhabilitar el formulario
      * @param posicion en la lista del comic seleccionado
      */
+        
+    /*       
     public consultarComic(posicion : number) : void {
         let comic = this.listaComics[posicion];
         this.gestionarComicForm.controls.nombre.setValue(comic.nombre);
@@ -114,12 +143,71 @@ export class GestionarComicComponent implements OnInit {
         this.gestionarComicForm.controls.autores.disable();
         this.gestionarComicForm.controls.color.disable();
 //        this.gestionarComicForm.controls.color.enable(); para habilitar el campo
+    }
+*/
 
+    //Metodo que rellena los campos de texto para actualizarlos
+
+    public editarComic(posicion : number) : void {
+        let comic = this.listaComics[posicion];
+        this.gestionarComicForm.controls.nombre.setValue(comic.nombre);
+        this.gestionarComicForm.controls.editorial.setValue(comic.editorial);
+        this.gestionarComicForm.controls.tematica.setValue(comic.tematica);
+        this.gestionarComicForm.controls.coleccion.setValue(comic.coleccion);
+        this.gestionarComicForm.controls.numeroPaginas.setValue(comic.numeroPaginas);
+        this.gestionarComicForm.controls.precio.setValue(comic.precio);
+        this.gestionarComicForm.controls.autores.setValue(comic.autores);
+        this.gestionarComicForm.controls.color.setValue(comic.color);
+
+        // Se oculta el boton para registrar nuevos comics
+        this.botonCrearComic = false;
+
+        // Se muestra el boton para actualizar comics
+        this.botonActualizarComic = true;
     }
 
-    public editarComic(comic : any) : void {
-        this.router.navigate(['bienvenida',comic]);
+    //Metodo para actualizar comic 
+
+    public actualizarComic(): void {
+        this.submitted = true;
+
+        if (this.gestionarComicForm.invalid) { 
+            return;
+        }
+
+        // Creación de un nuevo Comic para llenar con nuevos datos
+        this.comic = new ComicDTO();
+                
+        this.comic.id = this.f.id.value;
+        console.log("ID = " + this.f.id.value);
+        this.comic.nombre = this.f.nombre.value;
+        this.comic.editorial = this.f.editorial.value;
+        this.comic.tematica = this.f.tematica.value;
+        this.comic.coleccion = this.f.coleccion.value;
+        this.comic.numeroPaginas = this.f.numeroPaginas.value;
+        this.comic.precio = this.f.precio.value;
+        this.comic.autores = this.f.autores.value;
+        this.comic.color = this.f.color.value;
+
+        //Se elimina el comic señalado y se remplaza por la actualizacion
+        this.listaComics.splice((this.f.id.value)-1, 1, this.comic);
+        this.limpiarFormulario();
+
+        // Mostrar boton crear comic
+        this.botonCrearComic = true;
+
+        // Ocultamos boton actualizar comic
+        this.botonActualizarComic = false;    
     }
+
+    //Metodo para eliminar comic
+
+    public eliminarComic(posicion : number): void{       
+        this.listaComics.splice((posicion), 1);
+    }
+
+
+    //Metodo para limpiar campos 
 
     private limpiarFormulario() : void {
         this.submitted = false;
@@ -132,6 +220,7 @@ export class GestionarComicComponent implements OnInit {
         this.gestionarComicForm.controls.autores.setValue(null);
         this.gestionarComicForm.controls.color.setValue(null);
     }
+
 
     /**
      * @description Metodo que obtiene los controles y sus propiedades

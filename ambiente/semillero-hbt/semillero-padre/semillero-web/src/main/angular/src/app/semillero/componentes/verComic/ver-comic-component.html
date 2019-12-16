@@ -1,6 +1,6 @@
 <div class="container">
-    <form [formGroup]="gestionarComicForm">
-        <h1>Gestionar Comic</h1>
+    <form [formGroup]="verComicForm">
+        <h1>Ver Comic</h1>
         <hr>
 
         <div class="row">
@@ -79,45 +79,12 @@
                 <span></span>
             </div>
             <div class="col-6 text-right">
-                <button type="button" class="btn btn-primary" *ngIf="botonCrearComic" (click)="crearActualizarComic()">Agregar comic</button>
-                <button type="button" class="btn btn-warning" *ngIf="botonActualizarComic" (click)="actualizarComic()">Actualizar cambios</button>
+                
+                <button type="button" class="btn btn-primary" [routerLink]="['/gestionar-comic']">Cancelar</button>
             </div>
         </div>
 
         <br>
-        
-        <div class="row" [hidden]="listaComics.length === 0">
-            <div class="col-12">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Tematica</th>
-                            <th scope="col">Precio</th>
-                            <th scope="col">A color</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!--date:"MM/dd/yy"
-                        | uppercase-->
-                        <tr *ngFor="let comic of listaComics;let i=index;">
-                            <th scope="row">{{comic.id}}</th>
-                            <td>{{comic.nombre | uppercase }}</td>
-                            <td>{{comic.tematica | lowercase }}</td>
-                            <td>{{comic.precio | number: '.2'}}</td>
-                            <td>{{comic.color ? 'Si' : 'No' }}</td>
-                            <td>
-                                <i class="fas fa-search 2x ml-1" (click)="mostrarComic(comic)" title="Consultar"></i>
-                                <i class="fas fa-pencil-alt 2x ml-1"  (click)="editarComic(i)" title="Editar"></i>
-                                <i class="far fa-times-circle 2x ml-1" (click)="eliminarComic(i)" title="Eliminar"></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                
     </form>
-
 </div>

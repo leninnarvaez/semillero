@@ -12,6 +12,7 @@ import { MenuComponent } from './semillero/componentes/menu/menu-component';
 import { BienvenidaComponent } from './semillero/componentes/home/bienvenida-component';
 import { CrearPersonaComponent } from './semillero/componentes/crearPersona/crear-persona-component';
 import { GestionarComicComponent } from './semillero/componentes/gestionarComic/gestionar-comic';
+import { VerComicComponent } from './semillero/componentes/verComic/ver-comic-component';
 import { MostrarCiudadComponent } from './semillero/componentes/mostrarCiudad/mostrar-ciudad-component';
 import { ConcatenarDatosComponent } from './semillero/componentes/concatenarDatos/concatenar-datos-component';
 
@@ -33,6 +34,7 @@ import {AbstractService} from './semillero/services/template.service';
     BienvenidaComponent,
     CrearPersonaComponent,
     GestionarComicComponent,
+    VerComicComponent,
     MostrarCiudadComponent,
     ConcatenarDatosComponent
   ],
