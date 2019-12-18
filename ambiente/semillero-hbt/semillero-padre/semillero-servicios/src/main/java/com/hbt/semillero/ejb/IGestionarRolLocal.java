@@ -7,6 +7,8 @@ import javax.ejb.Local;
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.PersonajeDTO;
 import com.hbt.semillero.dto.RolDTO;
+import com.hbt.semillero.exceptions.PersonajeException;
+import com.hbt.semillero.exceptions.RolException;
 
 /**
  * Expone los métodos del EJB GestionarRol Las interfaces determinan una
@@ -24,9 +26,11 @@ public interface IGestionarRolLocal {
 	 * 
 	 * Metodo encargado de crear un rol	
 	 * @author Lenin	 
+	 * @throws PersonajeException 
+	 * @throws RolException 
 	 * 
 	 */
-	public void crearRol(RolDTO rolDTO);
+	public void crearRol(RolDTO rolDTO) throws RolException;
 
 	/**
 	 * 
@@ -55,17 +59,19 @@ public interface IGestionarRolLocal {
 	 * 
 	 * Metodo encargado de retornar la informacion de un rol
 	 * @author lenin
+	 * @throws RolException 
 	 */
 	
-	public List<RolDTO> consultarRoles();
+	public List<RolDTO> consultarRoles() throws RolException;
 
 	/**
 	 * 
 	 * Metodo encargado de retornar una lista de roles
 	 * @author lenin
+	 * @throws RolException 
 	 */
 	
 	
-	public List<RolDTO> consultarRoles(Long idPersonaje);
+	public List<RolDTO> consultarRoles(Long idPersonaje) throws RolException;
 		
 }

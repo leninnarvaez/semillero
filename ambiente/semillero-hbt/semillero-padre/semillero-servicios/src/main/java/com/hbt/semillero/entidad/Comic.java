@@ -301,6 +301,7 @@ public class Comic implements Serializable {
 	}
 	
 	//----------------------------------------
+/**
 	@Transient 
 	public BigDecimal getPrecioTotal() {
 		return precioTotal;
@@ -342,6 +343,7 @@ public class Comic implements Serializable {
 		this.precioTotal = precioTotal;
 	}
 */
+	/**
 	@Transient 
 	public BigDecimal getIva() {
 		return iva;
@@ -361,7 +363,7 @@ public class Comic implements Serializable {
 		return "Comic [id=" + id + ", nombre=" + nombre + ", editorial=" + editorial + ", tematica=" + tematicaEnum
 				+ ", coleccion=" + coleccion + ", numeroPaginas=" + numeroPaginas + ", precioLENIN=" + precio + ", autores="
 				+ autores + ", color=" + color + ", fechaVenta=" + fechaVenta + ", estado=" + estadoEnum + ", cantidad="
-				+ cantidad + ", precioTotal=" + precioTotal + "]";
+				+ cantidad + "]";
 	}
 
 	/**
@@ -386,8 +388,7 @@ public class Comic implements Serializable {
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + ((numeroPaginas == null) ? 0 : numeroPaginas.hashCode());
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
-		result = prime * result + ((tematicaEnum == null) ? 0 : tematicaEnum.hashCode());
-		result = prime * result + ((precioTotal == null) ? 0 : precioTotal.hashCode());
+		result = prime * result + ((tematicaEnum == null) ? 0 : tematicaEnum.hashCode());		
 		return result;
 	}
 
@@ -464,9 +465,7 @@ public class Comic implements Serializable {
 				return false;
 		} else if (!tematicaEnum.equals(other.tematicaEnum))
 			return false;
-		if (precioTotal == null) {
-			return false;
-		}
+		
 		return true;
 	}
 

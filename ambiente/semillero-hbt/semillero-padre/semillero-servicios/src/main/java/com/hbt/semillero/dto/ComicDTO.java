@@ -251,7 +251,7 @@ public class ComicDTO implements Serializable {
 		this.cantidad = cantidad;
 	}
 	
-	
+	/**
 
 	public BigDecimal getPrecioTotal() {
 		return precioTotal;

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.hbt.semillero.dto.ComicDTO;
+import com.hbt.semillero.exceptions.ComicException;
 
 /**
  * Expone los métodos del EJB GestionarComic Las interfaces determinan una
@@ -26,8 +27,9 @@ public interface IGestionarComicLocal {
 	 * @author ccastano
 	 * 
 	 * @param comicNuevo informacion nueva a crear
+	 * @throws ComicException 
 	 */
-	public void crearComic(ComicDTO comicNuevo);
+	public void crearComic(ComicDTO comicNuevo) throws ComicException;
 
 	/**
 	 * 
@@ -36,8 +38,9 @@ public interface IGestionarComicLocal {
 	 * @author ccastano
 	 * 
 	 * @param comicModificar informacion nueva a modificar
+	 * @throws ComicException 
 	 */
-	public void modificarComic(Long id, String nombre, ComicDTO comicNuevo);
+	public void modificarComic(Long id, String nombre, ComicDTO comicNuevo) throws ComicException;
 
 	/**
 	 * 
@@ -46,8 +49,9 @@ public interface IGestionarComicLocal {
 	 * @author ccastano
 	 * 
 	 * @param comicEliminar informacion a eliminar
+	 * @throws ComicException 
 	 */
-	public void eliminarComic(Long idComic);
+	public void eliminarComic(Long idComic) throws ComicException;
 
 	/**
 	 * 
@@ -55,19 +59,21 @@ public interface IGestionarComicLocal {
 	 * 
 	 * @param idComic identificador del comic a ser consultado
 	 * @return comic Resultado de la consulta
+	 * @throws ComicException 
 	 * @throws Exception si no se recibe idComic
 	 */
-	public ComicDTO consultarComic(String idComic);
+	public ComicDTO consultarComic(String idComic) throws ComicException;
 
 	/**
 	 * 
 	 * Metodo encargado de retornar una lista de comics
 	 * 
 	 * @return
+	 * @throws ComicException 
 	 */
-	public List<ComicDTO> consultarComics();
+	public List<ComicDTO> consultarComics() throws ComicException;
 	
-	public BigDecimal calcularPrecioTotal();
+	//public BigDecimal calcularPrecioTotal();
 	
 	
 }

@@ -10,12 +10,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-//import org.hibernate.service.spi.InjectService;
+import org.apache.log4j.Logger;
 
 import com.hbt.semillero.dto.PersonajeDTO;
 import com.hbt.semillero.ejb.GestionarComicBean;
 import com.hbt.semillero.ejb.GestionarPersonajeBean;
 import com.hbt.semillero.ejb.IGestionarPersonajeLocal;
+import com.hbt.semillero.exceptions.ComicException;
+import com.hbt.semillero.exceptions.PersonajeException;
 
 /**
  * <b>Descripción:<b> Clase que determina el servicio rest que permite gestionar
@@ -33,6 +35,8 @@ public class GestionarPersonajesRest {
 	 * Atriburo que permite gestionar un personaje
 	 */
 	
+	final static Logger logger = Logger.getLogger(GestionarComicBean.class);
+	
 	@EJB
 	private IGestionarPersonajeLocal gestionarPersonajeBean;
 
@@ -41,12 +45,44 @@ public class GestionarPersonajesRest {
 	 * http://localhost:8085/semillero-servicios/rest/GestionarRol/crear
 	 * @param persona
 	 * @return
+	 * @throws PersonajeException 
 	 */
 	
 	@POST
 	@Path("/crear")
-	public void crearPersonaje(PersonajeDTO personajeDTO) {
-		gestionarPersonajeBean.crearPersonaje(personajeDTO);
+	public void crearPersonaje(PersonajeDTO personajeDTO) throws PersonajeException {
+		
+		try {
+			gestionarPersonajeBean.crearPersonaje(personajeDTO);
+		}catch (PersonajeException e) {
+			logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
+			throw new PersonajeException("COD-per-001","Error al realizar el llamado a la creacion de personaje",e);	
+		}
+		
+		
+	}
+	
+	/**
+	 * 
+	 * Metodo encargado de traer la informacion de un comic determiando
+	 * http://localhost:8085/semillero-servicios/rest/GestionarPersonaje/consultarPersonajes
+	 * 
+	 * @param idPersonaje
+	 * @return
+	 * @throws PersonajeException 
+	 */
+	
+	@GET
+	@Path("/consultarPersonajes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<PersonajeDTO> consultarPersonajes() throws PersonajeException{
+		
+		try {
+			return gestionarPersonajeBean.consultarPersonajes();	
+		}catch (PersonajeException e) {
+			logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
+			throw new PersonajeException("COD-lj","Error al realizar el llamado cadena",e);	
+		}						
 	}
 	
 	/**
@@ -59,10 +95,10 @@ public class GestionarPersonajesRest {
 	 */
 	
 	@GET
-	@Path("/consultarPersonajes")
+	@Path("/consultarPersonajesPorParametro")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<PersonajeDTO> consultarPersonajes(){
-		return gestionarPersonajeBean.consultarPersonajes();		
+	public List<PersonajeDTO> consultarPersonajes(@QueryParam("index") int index, @QueryParam("cadena") String cadena){
+		return gestionarPersonajeBean.consultarPersonajes(index, cadena);		
 	}
 	
 	/**
@@ -72,13 +108,20 @@ public class GestionarPersonajesRest {
 	 * 
 	 * @param idComic
 	 * @return
+	 * @throws PersonajeException 
 	 */
 	
 	@GET
 	@Path("/consultarPersonajesPorId")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<PersonajeDTO> consultaPersonaje(@QueryParam("idComic") long idComic){
-		return gestionarPersonajeBean.consultarPersonajes(idComic);
+	public List<PersonajeDTO> consultaPersonaje(@QueryParam("idComic") long idComic) throws PersonajeException{
+		
+		try {
+			return gestionarPersonajeBean.consultarPersonajes(idComic);
+		}catch(PersonajeException e) {
+			logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
+			throw new PersonajeException("COD-lj02","Error al realizar el llamado cadena",e);
+		}					
 	}
 	
 	@GET

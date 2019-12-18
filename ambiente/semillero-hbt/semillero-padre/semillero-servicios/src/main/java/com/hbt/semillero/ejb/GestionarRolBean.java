@@ -22,6 +22,8 @@ import com.hbt.semillero.dto.RolDTO;
 import com.hbt.semillero.entidad.Comic;
 import com.hbt.semillero.entidad.Personaje;
 import com.hbt.semillero.entidad.Rol;
+import com.hbt.semillero.exceptions.PersonajeException;
+import com.hbt.semillero.exceptions.RolException;
 
 /**
  * <b>Descripción:<b> Clase que determina el bean para realizar las gestion de
@@ -45,12 +47,19 @@ public class GestionarRolBean implements IGestionarRolLocal {
 	 * @see com.hbt.semillero.ejb.IGestionarRolLocal#crearRol()
 	 * @descripcion metodo para crear rol
 	 * @author Lenin Narvaez
+	 * @throws PersonajeException 
 	 */
 	@Override
-	public void crearRol(RolDTO rolDTO) {
+	public void crearRol(RolDTO rolDTO) throws RolException {
 		logger.debug("Inicio del metodo CrearRol");
-		Rol rol = convertirDTOEntidad(rolDTO);
-		entityManager.persist(rol);
+		
+		try {
+			Rol rol = convertirDTOEntidad(rolDTO);
+			entityManager.persist(rol);
+		}catch(Exception e) {
+			logger.error("Ha ocurrido un error al momento de ejecutar crear rol");
+			throw new RolException("COD-ROL-0001","Error creando ROL",e);
+		}				
 		logger.debug("fin del metodo CrearRol");		
 	}
 
@@ -97,26 +106,32 @@ public class GestionarRolBean implements IGestionarRolLocal {
 	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#consultarRoles()
 	 * @descripcion metodo para Consultar roles
 	 * @author Lenin Narvaez
+	 * @throws RolException 
 	 */
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RolDTO> consultarRoles() {
+	public List<RolDTO> consultarRoles() throws RolException {
 		logger.debug("Inicio del metodo ConsularRol");
 		
-		String query = "SELECT rol "
-				+ "FROM Rol rol";
-		
-		List<Rol> listaRoles = entityManager.createQuery(query).getResultList();
-		
-		List<RolDTO> listaRolesDTO = new ArrayList<>();
-		
-		for (Rol rol : listaRoles) {
-			listaRolesDTO.add(convertirEntidadDTO(rol));
-		}
-		
-		logger.debug("fin del metodo ConsularRol");
-		return listaRolesDTO;
+		try{
+			String query = "SELECT rol "
+					+ "FROM Rol rol";
+			
+			List<Rol> listaRoles = entityManager.createQuery(query).getResultList();
+			
+			List<RolDTO> listaRolesDTO = new ArrayList<>();
+			
+			for (Rol rol : listaRoles) {
+				listaRolesDTO.add(convertirEntidadDTO(rol));
+			}
+			
+			logger.debug("fin del metodo ConsularRol");
+			return listaRolesDTO;
+		}catch(Exception e) {
+			logger.error("Ha ocurrido un error al momento de ejecutar crear rol");
+			throw new RolException("COD-ROL-0001","Error creando ROL",e);
+		}			
 	}
 	
 	/**
@@ -124,27 +139,34 @@ public class GestionarRolBean implements IGestionarRolLocal {
 	 * @see com.hbt.semillero.ejb.IGestionarRolLocal#consultarRol()
 	 * @descripcion metodo para consultar roles
 	 * @author Lenin Narvaez
+	 * @throws RolException 
 	 */
 	
 	@Override
-	public List<RolDTO> consultarRoles(Long idPersonaje) {
+	public List<RolDTO> consultarRoles(Long idPersonaje) throws RolException {
 		logger.debug("Inicio del metodo ConsularRol");
 		
-		String query = "SELECT rol "
-				+ "FROM Rol rol "
-				+ "WHERE rol.personaje.id = :idPersonaje";
-		
-		List<Rol> listaRoles = entityManager.createQuery(query)
-				.setParameter("idPersonaje", idPersonaje).getResultList();
-		
-		List<RolDTO> listaRolesDTO = new ArrayList<>();
-		
-		for (Rol rol : listaRoles) {
-			listaRolesDTO.add(convertirEntidadDTO(rol));
+		try {
+			String query = "SELECT rol "
+					+ "FROM Rol rol "
+					+ "WHERE rol.personaje.id = :idPersonaje";
+			
+			List<Rol> listaRoles = entityManager.createQuery(query)
+					.setParameter("idPersonaje", idPersonaje).getResultList();
+			
+			List<RolDTO> listaRolesDTO = new ArrayList<>();
+			
+			for (Rol rol : listaRoles) {
+				listaRolesDTO.add(convertirEntidadDTO(rol));
+			}
+			
+			logger.debug("fin del metodo ConsularRol");
+			return listaRolesDTO;
+		}catch (Exception e) {
+			logger.error("Ha ocurrido un error al momento de ejecutar crear rol");
+			throw new RolException("COD-ROL-0002","Error creando ROL",e);
 		}
-		
-		logger.debug("fin del metodo ConsularRol");
-		return listaRolesDTO;
+				
 	}
 	
 	/**

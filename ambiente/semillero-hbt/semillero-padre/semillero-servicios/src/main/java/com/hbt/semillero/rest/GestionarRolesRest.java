@@ -10,11 +10,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
+
 //import org.hibernate.service.spi.InjectService;
 
 
 import com.hbt.semillero.dto.RolDTO;
+import com.hbt.semillero.ejb.GestionarComicBean;
 import com.hbt.semillero.ejb.IGestionarRolLocal;
+import com.hbt.semillero.exceptions.RolException;
 
 /**
  * <b>Descripción:<b> Clase que determina el servicio rest que permite gestionar
@@ -27,7 +31,7 @@ import com.hbt.semillero.ejb.IGestionarRolLocal;
 @Path("/GestionarRol")
 public class GestionarRolesRest {
 	
-	
+	final static Logger logger = Logger.getLogger(GestionarComicBean.class);	
 	/**
 	 * Atriburo que permite gestionar un rol
 	 */
@@ -39,12 +43,20 @@ public class GestionarRolesRest {
 	 * http://localhost:8085/semillero-servicios/rest/GestionarRol/crear
 	 * @param rol
 	 * @return
+	 * @throws PersonajeException 
 	 */
 	
 	@POST
 	@Path("/crear")
-	public void crearRol(RolDTO rolDTO) {
-		gestionarRolBean.crearRol(rolDTO);
+	public void crearRol(RolDTO rolDTO) throws RolException {
+		
+		try {
+			gestionarRolBean.crearRol(rolDTO);
+		}catch (RolException e) {
+			logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
+			throw new RolException("COD-per-001","Error al realizar el llamado a la creacion de personaje",e);	
+		}
+				
 	}
 	
 	/**
@@ -54,14 +66,20 @@ public class GestionarRolesRest {
 	 * 
 	 * @param idRol
 	 * @return
+	 * @throws RolException 
 	 */
 	
 	@GET
 	@Path("/consultarRoles")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<RolDTO> consultarRoles(){
-		return gestionarRolBean.consultarRoles();
+	public List<RolDTO> consultarRoles() throws RolException{
 		
+		try {
+			return gestionarRolBean.consultarRoles();
+		}catch (RolException e) {
+			logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
+			throw new RolException("COD-rol-001","Error al realizar el llamado a la consulta de personaje",e);
+		}						
 	}
 	
 	/**
@@ -71,13 +89,22 @@ public class GestionarRolesRest {
 	 * 
 	 * @param idPersonaje
 	 * @return
+	 * @throws RolException 
 	 */
 	
 	@GET
 	@Path("/consultarRolesPorId")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<RolDTO> consultaRol(@QueryParam("idPersonaje") long idPersonaje){
-		return gestionarRolBean.consultarRoles(idPersonaje);
+	public List<RolDTO> consultaRol(@QueryParam("idPersonaje") long idPersonaje) throws RolException{
+		
+		try {
+			return gestionarRolBean.consultarRoles(idPersonaje);
+		}catch (RolException e) {
+			logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
+			throw new RolException("COD-rol-002","Error al realizar el llamado a la consulta de personaje",e);
+		}
+		
+		
 	}
 
 }

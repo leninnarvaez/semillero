@@ -6,6 +6,7 @@ import javax.ejb.Local;
 
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.PersonajeDTO;
+import com.hbt.semillero.exceptions.PersonajeException;
 
 /**
  * Expone los métodos del EJB GestionarPersonaje Las interfaces determinan una
@@ -24,10 +25,11 @@ public interface IGestionarPersonajeLocal {
 	 * Metodo encargado de crear un personaje
 	 * 
 	 * @author Lenin
+	 * @throws PersonajeException 
 	 * 
 	 * 
 	 */
-	public void crearPersonaje(PersonajeDTO personajeDTO);
+	public void crearPersonaje(PersonajeDTO personajeDTO) throws PersonajeException;
 
 	/**
 	 * 
@@ -59,17 +61,22 @@ public interface IGestionarPersonajeLocal {
 	 * 
 	 * Metodo encargado de retornar la informacion de un personaje
 	 * @author lenin
+	 * @throws PersonajeException 
 	 */
 	
-	public List<PersonajeDTO> consultarPersonajes();
+	public List<PersonajeDTO> consultarPersonajes() throws PersonajeException;
 
 	/**
 	 * 
 	 * Metodo encargado de retornar una lista de personajes
 	 * @author lenin
+	 * @throws PersonajeException 
 	 */
 	
-	public List<PersonajeDTO> consultarPersonajes(Long idComic);
+	public List<PersonajeDTO> consultarPersonajes(Long idComic) throws PersonajeException;
+	
+	
+	public List<PersonajeDTO> consultarPersonajes(int index, String cadena);
 	
 	
 	default double defaultMethod() {

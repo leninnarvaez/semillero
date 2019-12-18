@@ -21,6 +21,8 @@ import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.PersonajeDTO;
 import com.hbt.semillero.entidad.Comic;
 import com.hbt.semillero.entidad.Personaje;
+import com.hbt.semillero.exceptions.ComicException;
+import com.hbt.semillero.exceptions.PersonajeException;
 
 /**
  * <b>Descripción:<b> Clase que determina el bean para realizar las gestion de
@@ -40,13 +42,22 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 	
 	/**
 	 * 
+	 * @throws PersonajeException 
 	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#crearPersonaje()
 	 */
 	@Override
-	public void crearPersonaje(PersonajeDTO personajeDTO) {
+	public void crearPersonaje(PersonajeDTO personajeDTO) throws PersonajeException {
 		logger.debug("Inicio del metodo CrearPersonaje");
-		Personaje personaje = convertirDTOEntidad(personajeDTO);
-		entityManager.persist(personaje);
+		
+		try {
+			Personaje personaje = convertirDTOEntidad(personajeDTO);
+			entityManager.persist(personaje);
+		}catch(Exception e) {
+			logger.error("Ha ocurrido un error al momento de crear el pesonaje");
+			throw new PersonajeException("COD-0001","Error creando personaje",e); 
+		}
+		
+		
 		logger.debug("fin del metodo CrearPersonaje");
 		
 	}
@@ -82,52 +93,99 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 	
 	/**
 	 * 
+	 * @throws PersonajeException 
 	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#consultarPersonaje()
 	 */
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PersonajeDTO> consultarPersonajes() {
+	public List<PersonajeDTO> consultarPersonajes() throws PersonajeException {
 		logger.debug("Inicio del metodo ConsularPersonaje");
 		
-		String query = "SELECT personaje "
-				+ "FROM Personaje personaje";
 		
-		List<Personaje> listaPersonajes = entityManager.createQuery(query).getResultList();
+		try {
+			String query = "SELECT personaje "
+					+ "FROM Personaje personaje";
+			
+			List<Personaje> listaPersonajes = entityManager.createQuery(query).getResultList();
+			
+			List<PersonajeDTO> listaPersonajesDTO = new ArrayList<>();
+			
+			for (Personaje personaje : listaPersonajes) {
+				listaPersonajesDTO.add(convertirEntidadDTO(personaje));
+			}
+			
+			return listaPersonajesDTO;
+			
+		}catch (Exception e) {
+			logger.error("Ha ocurrido un error al momento de consultar el pesonaje");
+			throw new PersonajeException("COD-0002","Error creando personaje",e);
+		}				
+				
+	}
+	
+	/**
+	 * Metodo que consulta los personajes envia una cadena
+	 * */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PersonajeDTO> consultarPersonajes(int index, String cadena) {
+		logger.debug("Inicio del metodo ConsularPersonaje");
 		
-		List<PersonajeDTO> listaPersonajesDTO = new ArrayList<>();
-		
-		for (Personaje personaje : listaPersonajes) {
-			listaPersonajesDTO.add(convertirEntidadDTO(personaje));
+		List<PersonajeDTO> listaPersonajesDTO = new ArrayList();
+		try {
+			
+			String query = "SELECT personaje "
+					+ "FROM Personaje personaje";
+			
+			List<Personaje> listaPersonajes = entityManager.createQuery(query).getResultList();
+			
+			//List<PersonajeDTO> listaPersonajesDTO = new ArrayList<>();
+			
+			for (Personaje personaje : listaPersonajes) {
+				listaPersonajesDTO.add(convertirEntidadDTO(personaje));
+			}
+			PersonajeDTO personajeDTO = listaPersonajesDTO.get(index);
+			
+			Long valorCadena = Long.parseLong(cadena);
+		}catch (IndexOutOfBoundsException e) {
+			logger.error("Indice fuera de limite");			
+		} catch (NumberFormatException e) {
+			logger.error("Error al convertir el numero");
 		}
-		
 		logger.debug("fin del metodo ConsularPersonaje");
 		return listaPersonajesDTO;
 	}
 	
 	/**
-	 * 
+	 * Metodo que consulta los personajes por ID
+	 * @throws PersonajeException 
 	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#consultarPersonaje()
 	 */
 	@Override
-	public List<PersonajeDTO> consultarPersonajes(Long idComic) {
+	public List<PersonajeDTO> consultarPersonajes(Long idComic) throws PersonajeException {
+		
 		logger.debug("Inicio del metodo ConsularPersonaje");
-		
-		String query = "SELECT personaje "
-				+ "FROM Personaje personaje "
-				+ "WHERE personaje.comic.id = :idComic";
-		
-		List<Personaje> listaPersonajes = entityManager.createQuery(query)
-				.setParameter("idComic", idComic).getResultList();
-		
-		List<PersonajeDTO> listaPersonajesDTO = new ArrayList<>();
-		
-		for (Personaje personaje : listaPersonajes) {
-			listaPersonajesDTO.add(convertirEntidadDTO(personaje));
-		}
-		
-		logger.debug("fin del metodo ConsularPersonaje");
-		return listaPersonajesDTO;
+		try {
+			String query = "SELECT personaje "
+					+ "FROM Personaje personaje "
+					+ "WHERE personaje.comic.id = :idComic";
+			
+			List<Personaje> listaPersonajes = entityManager.createQuery(query)
+					.setParameter("idComic", idComic).getResultList();
+			
+			List<PersonajeDTO> listaPersonajesDTO = new ArrayList<>();
+			
+			for (Personaje personaje : listaPersonajes) {
+				listaPersonajesDTO.add(convertirEntidadDTO(personaje));
+			}
+			
+			logger.debug("fin del metodo ConsularPersonaje");
+			return listaPersonajesDTO;
+		}catch(Exception e) {
+			logger.error("Ha ocurrido un error al momento de consultar el pesonaje");
+			throw new PersonajeException("COD-0003","Error creando personaje",e);
+		}							
 	}
 		
 	
@@ -180,26 +238,3 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
