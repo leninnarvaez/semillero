@@ -1,6 +1,7 @@
 package com.hbt.semillero.entidad;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,10 +38,6 @@ public class Cliente implements Serializable{
 	@Column(name = "CLIENTE_NOMBRE")
 	private String nombre;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CLIENTE_ID_COMIC")
-	private Comic comic;
-	
 	@Column(name = "CLIENTE_TIPO_DOCUMENTO")
 	@Enumerated(value = EnumType.STRING)
 	private TipoDocumentoEnum tipoDocumento;
@@ -49,7 +46,7 @@ public class Cliente implements Serializable{
 	private String documento;
 	
 	@Column(name = "CLIENTE_FECHA")
-	private String fecha;
+	private LocalDate fecha;
 	
 	/**
 	 * Metodo encargado de retornar el valor del atributo id
@@ -91,26 +88,6 @@ public class Cliente implements Serializable{
 		this.nombre = nombre;
 	}
 
-	/**
-	 * Metodo encargado de retornar el valor del atributo comic
-	 * 
-	 * @return El comic asociado a la clase
-	 */
-	
-	public Comic getComic() {
-		return comic;
-	}
-
-	/**
-	 * Metodo encargado de modificar el valor del atributo comic
-	 * 
-	 * @param comic El nuevo estado a modificar.
-	 */
-	
-	public void setComic(Comic comic) {
-		this.comic = comic;
-	}
-
 	public TipoDocumentoEnum getTipoDocumento() {
 		return tipoDocumento;
 	}
@@ -127,41 +104,13 @@ public class Cliente implements Serializable{
 		this.documento = documento;
 	}
 
-	public String getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
 	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

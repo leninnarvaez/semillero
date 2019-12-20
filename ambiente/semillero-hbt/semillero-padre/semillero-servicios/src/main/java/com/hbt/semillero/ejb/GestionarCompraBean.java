@@ -117,8 +117,7 @@ public class GestionarCompraBean implements IGestionarCompraLocal {
 	private Cliente convertirDTOEntidad(ClienteDTO clienteDTO) {
 		Cliente Cliente = new Cliente();
 		Cliente.setId(clienteDTO.getId());
-		Cliente.setNombre(clienteDTO.getNombre());
-		Cliente.setComic(new Comic());		
+		Cliente.setNombre(clienteDTO.getNombre());	
 		Cliente.setTipoDocumento(clienteDTO.getTipoDocumento());
 				
 		return Cliente;

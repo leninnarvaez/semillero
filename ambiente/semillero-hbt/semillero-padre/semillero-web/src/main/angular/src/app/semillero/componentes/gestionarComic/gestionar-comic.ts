@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VerComicComponent } from '../verComic/ver-comic-component';
+import { GestionarComicService } from '../../services/gestionar-comics.service';
 
 
 /**
@@ -63,7 +64,8 @@ export class GestionarComicComponent implements OnInit {
      */
     
     constructor(private fb : FormBuilder,
-        private router : Router) {
+        private router : Router,
+        private gestionarComicService : GestionarComicService) {
         this.gestionarComicForm = this.fb.group({
             id : [null],
             nombre : [null, Validators.required],
@@ -87,6 +89,15 @@ export class GestionarComicComponent implements OnInit {
         //this.consultarComic1 = new VerComicComponent();
         this.listaComics = new Array<ComicDTO>();        
         this.botonCrearComic = true;
+        this.consultarComics();
+    }
+
+    private consultarComics(){
+        this.gestionarComicService.consultarComics().subscribe(listaComics =>{
+            this.listaComics = listaComics;
+        }, error =>{ 
+            console.log("Se ha presentado un error al momento de consultar comics "+error)
+        });
     }
 
     /**

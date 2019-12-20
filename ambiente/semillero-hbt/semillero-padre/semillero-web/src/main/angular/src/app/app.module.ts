@@ -15,6 +15,7 @@ import { GestionarComicComponent } from './semillero/componentes/gestionarComic/
 import { VerComicComponent } from './semillero/componentes/verComic/ver-comic-component';
 import { MostrarCiudadComponent } from './semillero/componentes/mostrarCiudad/mostrar-ciudad-component';
 import { ConcatenarDatosComponent } from './semillero/componentes/concatenarDatos/concatenar-datos-component';
+import { GestionarClienteComponent } from './semillero/componentes/gestionarCliente/gestionar-cliente';
 
 // DTOs
 export { ComicDTO } from './semillero/dto/comic.dto';
@@ -22,8 +23,9 @@ export { ResultadoDTO } from './semillero/dto/resultado.dto';
 
 //Manejo de servicios
 
-import {EjemploService} from './semillero/services/ejemplo.service';
+import {GestionarComicService} from './semillero/services/gestionar-comics.service';
 import {AbstractService} from './semillero/services/template.service';
+
 
 
 
@@ -36,7 +38,9 @@ import {AbstractService} from './semillero/services/template.service';
     GestionarComicComponent,
     VerComicComponent,
     MostrarCiudadComponent,
-    ConcatenarDatosComponent
+    ConcatenarDatosComponent,
+    GestionarClienteComponent
+    
   ],
   imports: [
     BrowserModule,

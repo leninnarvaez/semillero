@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import {EjemploService} from '../../services/ejemplo.service';
+import {GestionarComicService} from '../../services/gestionar-comics.service';
 import { ComicDTO } from '../../dto/comic.dto';
+import { ClienteDTO} from '../../dto/cliente.dto';
 
 /**
  * @description Componente bienvenida, el cual contiene la imagen de bienvenida al semillero
@@ -18,7 +19,7 @@ export class BienvenidaComponent implements OnInit {
   public urlImagen : string;
   public comicDTO : ComicDTO;
   
-  constructor(private router : Router, private activatedRoute: ActivatedRoute, private ejemploService: EjemploService) {
+  constructor(private router : Router, private activatedRoute: ActivatedRoute, private gestionarComicService: GestionarComicService) {
     console.log("entro al constructor del componente bienvenida");
   }
 
@@ -28,7 +29,7 @@ export class BienvenidaComponent implements OnInit {
     
     console.log("Parametros recibidos " + data);
 
-    this.ejemploService.consultarComics().subscribe(respuesta => {
+    this.gestionarComicService.consultarComics().subscribe(respuesta => {
       console.log(respuesta);
     });
 
@@ -47,7 +48,7 @@ export class BienvenidaComponent implements OnInit {
     this.comicDTO.color = true;
 
     
-    this.ejemploService.crearComic(this.comicDTO).subscribe(respuesta => {
+    this.gestionarComicService.crearComic(this.comicDTO).subscribe(respuesta => {
       console.log(respuesta);
     });
 

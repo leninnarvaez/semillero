@@ -47,12 +47,12 @@ public class GestionarClienteBean implements IGestionarClienteLocal {
 	/**
 	 * 
 	 * @throws ClienteException 
-	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#crearPersonaje()
+	 * @see com.hbt.semillero.ejb.IGestionarClienteLocal#crearCliente()
 	 */
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public ClienteDTO crearCliente(ClienteDTO clienteDTO) throws ClienteException {
-		logger.debug("Inicio del metodo CrearPersonaje");
+		logger.debug("Inicio del metodo CrearComic");
 		
 		try {
 			// Entidad nueva
@@ -60,12 +60,12 @@ public class GestionarClienteBean implements IGestionarClienteLocal {
 			// Se almacena la informacion y se maneja la enidad comic
 			logger.debug("Adentro del try: "+cliente);
 			entityManager.persist(cliente);
-			return convertirEntidadDTO(cliente);
+			//return convertirEntidadDTO(cliente);
 		}catch(Exception e) {
-			logger.error("Ha ocurrido un error al momento de crear el personaje: "+e);
-			throw new ClienteException("COD-0001","Error ejecutando la creacion del personaje",e);
+			logger.error("Ha ocurrido un error al momento de crear el cliente: "+e);
+			throw new ClienteException("COD-0001","Error ejecutando la creacion del cliente",e);
 		}
-				
+		return clienteDTO;
 	}
 
 
@@ -106,9 +106,7 @@ public class GestionarClienteBean implements IGestionarClienteLocal {
 		}				
 				
 	}
-	
-	
-		
+			
 	
 	/**
  	 * Metodo encargado de transformar un personaje a un personajecDTO
@@ -119,9 +117,8 @@ public class GestionarClienteBean implements IGestionarClienteLocal {
 
 	private Cliente convertirDTOEntidad(ClienteDTO clienteDTO) {
 		Cliente Cliente = new Cliente();
-		Cliente.setId(clienteDTO.getId());
-		Cliente.setNombre(clienteDTO.getNombre());
-		Cliente.setComic(new Comic());		
+		Cliente.setDocumento(clienteDTO.getDocumento());
+		Cliente.setNombre(clienteDTO.getNombre());			
 		Cliente.setTipoDocumento(clienteDTO.getTipoDocumento());
 				
 		return Cliente;
@@ -137,7 +134,7 @@ public class GestionarClienteBean implements IGestionarClienteLocal {
 	
 	private ClienteDTO convertirEntidadDTO(Cliente cliente) {
 		ClienteDTO ClienteDTO = new ClienteDTO();
-		ClienteDTO.setId(cliente.getId());
+		ClienteDTO.setDocumento(cliente.getDocumento());
 		ClienteDTO.setNombre(cliente.getNombre());		
 		ClienteDTO.setTipoDocumento(cliente.getTipoDocumento());
 		

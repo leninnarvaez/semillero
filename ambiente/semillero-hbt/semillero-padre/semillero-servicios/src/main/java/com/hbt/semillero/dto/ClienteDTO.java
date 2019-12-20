@@ -1,6 +1,7 @@
 package com.hbt.semillero.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import com.hbt.semillero.entidad.Comic;
 import com.hbt.semillero.entidad.EstadoEnum;
@@ -23,7 +24,7 @@ public class ClienteDTO implements Serializable{
 	private String nombre;
 	private TipoDocumentoEnum tipoDocumento;
 	private String documento;
-	private String fecha;	
+	private LocalDate fecha;	
 	
 	
 	/**
@@ -83,11 +84,13 @@ public class ClienteDTO implements Serializable{
 		this.documento = documento;
 	}
 
-	public String getFecha() {
+
+
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 

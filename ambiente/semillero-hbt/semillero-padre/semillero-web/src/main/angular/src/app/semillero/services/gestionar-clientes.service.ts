@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { AbstractService } from './template.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ComicDTO } from '../dto/comic.dto';
+import { ClienteDTO } from '../dto/cliente.dto';
 
 /**
  * Servicio encargado de llamar a los servicios REST de
@@ -13,7 +13,7 @@ import { ComicDTO } from '../dto/comic.dto';
 @Injectable({
   providedIn: 'root'
 })
-export class EjemploService extends AbstractService {
+export class GestionarClienteService extends AbstractService {
 
   /**
    * Constructor
@@ -23,11 +23,11 @@ export class EjemploService extends AbstractService {
   }
 
   
-  public consultarComics(): Observable<any> {
-    return this.httpClient.get('http://localhost:8085/semillero-servicios/rest/GestionarComic/consultarComics');
+  public consultarClientes(): Observable<any> {
+    return this.httpClient.get('http://localhost:8085/semillero-servicios/rest/GestionarCliente/consultarClientes');
   }
 
-  public crearComic(comicDTO : ComicDTO): Observable<any> {
-    return this.httpClient.post('http://localhost:8085/semillero-servicios/rest/GestionarComic/crear',comicDTO);
+  public crearCliente(clienteDTO : ClienteDTO): Observable<any> {
+    return this.httpClient.post('http://localhost:8085/semillero-servicios/rest/GestionarCliente/crear',clienteDTO);
   }
 }
