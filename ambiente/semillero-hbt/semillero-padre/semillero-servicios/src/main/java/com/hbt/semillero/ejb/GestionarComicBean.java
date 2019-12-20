@@ -48,8 +48,7 @@ public class GestionarComicBean implements IGestionarComicLocal {
 	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#crearComic(com.hbt.semillero.dto.ComicDTO)
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public void crearComic(ComicDTO comicNuevo) throws ComicException {
-		
+	public void crearComic(ComicDTO comicNuevo) throws ComicException {		
 		try {
 			// Entidad nueva
 			Comic comic = convertirComicDTOToComic(comicNuevo);

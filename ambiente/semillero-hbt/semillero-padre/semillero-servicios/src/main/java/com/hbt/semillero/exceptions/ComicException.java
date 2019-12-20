@@ -8,8 +8,14 @@ public class ComicException extends Exception{
 	private static final long serialVersionUID = 1L;
 	
 	private String codigo;
-	private String mensaje;
+	private String mensaje;	
 	
+	public ComicException(String codigo, String mensaje) {
+		super();
+		this.codigo = codigo;
+		this.mensaje = mensaje;
+	}
+
 	public ComicException(String codigo, String mensaje, Throwable causa){
 		super(mensaje, causa);
 		this.codigo = codigo;

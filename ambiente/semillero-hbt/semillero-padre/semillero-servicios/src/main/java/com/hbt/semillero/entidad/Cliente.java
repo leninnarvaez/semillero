@@ -16,8 +16,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "PERSONAJE")
-public class Personaje implements Serializable{
+@Table(name = "CLIENTE")
+public class Cliente implements Serializable{
 
 	/**
 	 * Serializar es pasar un Objeto a un array de bytes y viceversa. Atributo que
@@ -29,25 +29,28 @@ public class Personaje implements Serializable{
 	
 	
 	@Id
-	@SequenceGenerator(allocationSize = 1, name = "PERSONAJE_ID_GENERATOR", sequenceName = "SEC_PERSONAJE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSONAJE_ID_GENERATOR")
-	@Column(name = "PERS_ID")
+	@SequenceGenerator(allocationSize = 1, name = "CLIENTE_ID_GENERATOR", sequenceName = "SEC_CLIENTE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENTE_ID_GENERATOR")
+	@Column(name = "CLIENTE_ID")
 	private long id;
 	
-	@Column(name = "PERS_NOMBRE")
+	@Column(name = "CLIENTE_NOMBRE")
 	private String nombre;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PERS_ID_COMIC")
+	@JoinColumn(name = "CLIENTE_ID_COMIC")
 	private Comic comic;
 	
-	@Column(name = "PERS_ESTADO")
+	@Column(name = "CLIENTE_TIPO_DOCUMENTO")
 	@Enumerated(value = EnumType.STRING)
-	private EstadoEnum estado;
+	private TipoDocumentoEnum tipoDocumento;
 	
-	@Column(name = "PERS_SOPERPODER")
-	private String superPoder;
-
+	@Column(name = "CLIENTE_DOCUMENTO")
+	private String documento;
+	
+	@Column(name = "CLIENTE_FECHA")
+	private String fecha;
+	
 	/**
 	 * Metodo encargado de retornar el valor del atributo id
 	 * 
@@ -108,33 +111,30 @@ public class Personaje implements Serializable{
 		this.comic = comic;
 	}
 
-	/**
-	 * Metodo encargado de retornar el valor del atributo estado
-	 * 
-	 * @return El estado asociado a la clase
-	 */
-	
-	public EstadoEnum getEstado() {
-		return estado;
+	public TipoDocumentoEnum getTipoDocumento() {
+		return tipoDocumento;
 	}
 
-	/**
-	 * Metodo encargado de modificar el valor del atributo estado
-	 * 
-	 * @param estado El nuevo estado a modificar.
-	 */
-	
-	public void setEstado(EstadoEnum estado) {
-		this.estado = estado;
+	public void setTipoDocumento(TipoDocumentoEnum tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
 	}
 
-	public String getSuperPoder() {
-		return superPoder;
+	public String getDocumento() {
+		return documento;
 	}
 
-	public void setSuperPoder(String superPoder) {
-		this.superPoder = superPoder;
+	public void setDocumento(String documento) {
+		this.documento = documento;
 	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+
 	
 	
 }

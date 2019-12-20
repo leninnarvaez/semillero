@@ -4,8 +4,12 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.hbt.semillero.dto.ClienteDTO;
 import com.hbt.semillero.dto.ComicDTO;
+import com.hbt.semillero.dto.CompraDTO;
 import com.hbt.semillero.dto.PersonajeDTO;
+import com.hbt.semillero.exceptions.ClienteException;
+import com.hbt.semillero.exceptions.CompraException;
 import com.hbt.semillero.exceptions.PersonajeException;
 
 /**
@@ -18,7 +22,7 @@ import com.hbt.semillero.exceptions.PersonajeException;
  *
  */
 @Local
-public interface IGestionarPersonajeLocal {
+public interface IGestionarCompraLocal {
 
 	/**
 	 * 
@@ -29,7 +33,7 @@ public interface IGestionarPersonajeLocal {
 	 * 
 	 * 
 	 */
-	public PersonajeDTO crearPersonaje(PersonajeDTO personajeDTO) throws PersonajeException;
+	public CompraDTO compraCliente(CompraDTO compraDTO) throws CompraException;
 
 	/**
 	 * 
@@ -39,25 +43,8 @@ public interface IGestionarPersonajeLocal {
 	 * @throws PersonajeException 
 	 * 
 	 */
-	public PersonajeDTO actualizarPersonaje(PersonajeDTO personajeDTO) throws PersonajeException;
-
-	/**
-	 * 
-	 * Metodo encargado de eliminar un personaje 
-	 * 
-	 * @author lenin
-	 * 
-	 * 
-	 */
-	public void eliminarPersonaje();
 		
-	/**
-	 * 
-	 * Metodo encargado de retornar la informacion de un personaje
-	 * @author lenin
-	 */
-	
-	public void consultarPersonaje();
+	public void consultarCompra();
 	/**
 	 * 
 	 * Metodo encargado de retornar la informacion de un personaje
@@ -65,7 +52,7 @@ public interface IGestionarPersonajeLocal {
 	 * @throws PersonajeException 
 	 */
 	
-	public List<PersonajeDTO> consultarPersonajes() throws PersonajeException;
+	public List<CompraDTO> consultarCompras() throws CompraException;
 
 	/**
 	 * 
@@ -74,14 +61,7 @@ public interface IGestionarPersonajeLocal {
 	 * @throws PersonajeException 
 	 */
 	
-	public List<PersonajeDTO> consultarPersonajes(Long idComic) throws PersonajeException;
+	public List<CompraDTO> consultarCompras(Long idComic) throws CompraException;
 	
 	
-	public List<PersonajeDTO> consultarPersonajes(int index, String cadena);
-	
-	
-	default double defaultMethod() {
-		System.out.println("Interface A Default Method");
-		return 0;
-	}
 }

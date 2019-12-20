@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.hbt.semillero.dto.ClienteDTO;
 import com.hbt.semillero.dto.ComicDTO;
 import com.hbt.semillero.dto.PersonajeDTO;
+import com.hbt.semillero.exceptions.ClienteException;
 import com.hbt.semillero.exceptions.PersonajeException;
 
 /**
@@ -18,7 +20,7 @@ import com.hbt.semillero.exceptions.PersonajeException;
  *
  */
 @Local
-public interface IGestionarPersonajeLocal {
+public interface IGestionarClienteLocal {
 
 	/**
 	 * 
@@ -29,7 +31,7 @@ public interface IGestionarPersonajeLocal {
 	 * 
 	 * 
 	 */
-	public PersonajeDTO crearPersonaje(PersonajeDTO personajeDTO) throws PersonajeException;
+	public ClienteDTO crearCliente(ClienteDTO clienteDTO) throws ClienteException;
 
 	/**
 	 * 
@@ -39,7 +41,7 @@ public interface IGestionarPersonajeLocal {
 	 * @throws PersonajeException 
 	 * 
 	 */
-	public PersonajeDTO actualizarPersonaje(PersonajeDTO personajeDTO) throws PersonajeException;
+	public ClienteDTO actualizarCliente(ClienteDTO clienteDTO) throws ClienteException;
 
 	/**
 	 * 
@@ -49,7 +51,7 @@ public interface IGestionarPersonajeLocal {
 	 * 
 	 * 
 	 */
-	public void eliminarPersonaje();
+	public void eliminarCliente();
 		
 	/**
 	 * 
@@ -57,7 +59,7 @@ public interface IGestionarPersonajeLocal {
 	 * @author lenin
 	 */
 	
-	public void consultarPersonaje();
+	public void consultarCliente();
 	/**
 	 * 
 	 * Metodo encargado de retornar la informacion de un personaje
@@ -65,7 +67,7 @@ public interface IGestionarPersonajeLocal {
 	 * @throws PersonajeException 
 	 */
 	
-	public List<PersonajeDTO> consultarPersonajes() throws PersonajeException;
+	public List<ClienteDTO> consultarClientes() throws ClienteException;
 
 	/**
 	 * 
@@ -74,14 +76,7 @@ public interface IGestionarPersonajeLocal {
 	 * @throws PersonajeException 
 	 */
 	
-	public List<PersonajeDTO> consultarPersonajes(Long idComic) throws PersonajeException;
+	public List<ClienteDTO> consultarClientes(Long idComic) throws ClienteException;
 	
 	
-	public List<PersonajeDTO> consultarPersonajes(int index, String cadena);
-	
-	
-	default double defaultMethod() {
-		System.out.println("Interface A Default Method");
-		return 0;
-	}
 }

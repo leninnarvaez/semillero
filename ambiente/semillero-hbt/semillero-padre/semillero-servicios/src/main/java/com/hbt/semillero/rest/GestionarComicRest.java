@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
@@ -51,8 +52,13 @@ public class GestionarComicRest {
 	@GET
 	@Path("/saludo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String primerRest() {
-		return "Prueba inicial servicios rest en el semillero java hbt";
+	public Response primerRest() {
+		logger.debug("Log enviado con la libreria logger");
+		String saludo = "Prueba inicial servicios rest en el semillero java hbt"; 
+		return Response.status(Response.Status.OK)
+					.entity(saludo)
+					.type(MediaType.APPLICATION_JSON)
+					.build();
 	}
 
 	/**
@@ -74,10 +80,7 @@ public class GestionarComicRest {
 		}catch(ComicException e) {			
 			logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
 			throw new ComicException("COD-lj","Error al realizar el llamado cadena",e);
-		}
-		
-		
-
+		}			
 	}
 
 	/**
@@ -95,8 +98,7 @@ public class GestionarComicRest {
 		ComicDTO comicDTO = null;
 			try {
 				if (idComic != null) {					
-				comicDTO = gestionarComicEJB.consultarComic(idComic.toString());
-				
+				comicDTO = gestionarComicEJB.consultarComic(idComic.toString());				
 			}
 			} catch (ComicException e) {
 				logger.error("Se capturo la excepcion y la informacion es: " + e.getCodigo() + "message: " + e.getMensaje());
@@ -116,19 +118,21 @@ public class GestionarComicRest {
 	@Path("/crear")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ResultadoDTO crearComic(ComicDTO comicDTO) {
-		ResultadoDTO resultadoDTO = new ResultadoDTO();
+	public Response crearComic(ComicDTO comicDTO) {
+		//ResultadoDTO resultadoDTO = new ResultadoDTO();
 		try {
 			gestionarComicEJB.crearComic(comicDTO);
-			//ResultadoDTO resultadoDTO = new ResultadoDTO(Boolean.TRUE, "Comic creado exitosamente");
-			resultadoDTO.setExitoso(true);
-			resultadoDTO.setMensajeEjecucion("Comic creado exitosamente");
+			ResultadoDTO resultadoDTO = new ResultadoDTO(Boolean.TRUE, "Comic creado exitosamente");			
+			return Response.status(Response.Status.CREATED)
+					.entity(resultadoDTO)
+					.type(MediaType.APPLICATION_JSON)
+					.build();
 		}catch (ComicException e) {
-			logger.error("Se a producido un error " + "message: " + e.getMessage());
-			resultadoDTO.setExitoso(false);
-			resultadoDTO.setMensajeEjecucion("Se ha presentado un error al crear el comic " + comicDTO.getNombre());
-		}			
-		return resultadoDTO;		
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("Fallo en la invocación del servicio " + e)
+					.type(MediaType.APPLICATION_JSON)
+					.build();
+		}					
 	}
 
 	/**

@@ -10,6 +10,12 @@ public class RolException extends Exception{
 	private String codigo;
 	private String mensaje;
 	
+	public RolException(String codigo, String mensaje) {
+		super();
+		this.codigo = codigo;
+		this.mensaje = mensaje;
+	}
+
 	public RolException(String codigo, String mensaje, Throwable causa){
 		super(mensaje, causa);
 		this.codigo = codigo;

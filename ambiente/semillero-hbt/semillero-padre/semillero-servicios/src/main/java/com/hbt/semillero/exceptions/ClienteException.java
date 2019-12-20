@@ -1,6 +1,6 @@
 package com.hbt.semillero.exceptions;
 
-public class PersonajeException extends Exception{
+public class ClienteException extends Exception{
 
 	/**
 	 * 
@@ -10,13 +10,13 @@ public class PersonajeException extends Exception{
 	private String codigo;
 	private String mensaje;
 		
-	public PersonajeException(String codigo, String mensaje) {
+	public ClienteException(String codigo, String mensaje) {
 		super();
 		this.codigo = codigo;
 		this.mensaje = mensaje;
 	}
 
-	public PersonajeException(String codigo, String mensaje, Throwable causa){
+	public ClienteException(String codigo, String mensaje, Throwable causa){
 		super(mensaje, causa);
 		this.codigo = codigo;
 		this.mensaje = mensaje;

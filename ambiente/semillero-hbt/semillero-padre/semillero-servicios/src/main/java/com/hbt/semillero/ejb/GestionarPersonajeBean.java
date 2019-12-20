@@ -13,6 +13,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
@@ -45,21 +46,31 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 	 * @throws PersonajeException 
 	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#crearPersonaje()
 	 */
-	@Override
-	public void crearPersonaje(PersonajeDTO personajeDTO) throws PersonajeException {
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public PersonajeDTO crearPersonaje(PersonajeDTO personajeDTO) throws PersonajeException {
 		logger.debug("Inicio del metodo CrearPersonaje");
 		
 		try {
+			// Entidad nueva
 			Personaje personaje = convertirDTOEntidad(personajeDTO);
+			// Se almacena la informacion y se maneja la enidad comic
+			logger.debug("Adentro del try: "+personaje);
 			entityManager.persist(personaje);
+			return convertirEntidadDTO(personaje);
 		}catch(Exception e) {
-			logger.error("Ha ocurrido un error al momento de crear el pesonaje");
-			throw new PersonajeException("COD-0001","Error creando personaje",e); 
+			logger.error("Ha ocurrido un error al momento de crear el personaje: "+e);
+			throw new PersonajeException("COD-0001","Error ejecutando la creacion del personaje",e);
 		}
 		
-		
-		logger.debug("fin del metodo CrearPersonaje");
-		
+//		try {
+//			Personaje personaje = convertirDTOEntidad(personajeDTO);
+//			entityManager.persist(personaje);
+//		}catch(Exception e) {
+//			logger.error("Ha ocurrido un error al momento de crear el pesonaje");
+//			throw new PersonajeException("COD-0001","Error creando personaje",e); 
+//		}			
+//		logger.debug("fin del metodo CrearPersonaje");		
 	}
 
 	/**
@@ -67,10 +78,22 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 	 * @see com.hbt.semillero.ejb.IGestionarPersonajeLocal#modificarPersonaje()
 	 */
 	@Override
-	public void actualizarPersonaje() {
-		logger.debug("Inicio del metodo modificarPersonaje");
+	public PersonajeDTO actualizarPersonaje(PersonajeDTO personajeDTO) throws PersonajeException {
+		logger.debug("Inicio del metodo CrearPersonaje");
+//		if(personajeDTO.getId() == null) {
+//			throw new PersonajeException("COM-1000","El identificador del objeto es requerido");
+//		}
 		
-		logger.debug("fin del metodo modificarPersonaje");
+		Query query = entityManager.createQuery("UPDATE Personaje personaje"
+				+ "SET personaje.estado = :estado, "
+				+"personaje.comic.id = :idComic "
+				+"WHERE personaje.id = :id");
+		
+		query.setParameter("estado", personajeDTO.getEstado());
+		query.setParameter("idComic", personajeDTO.getIdComic());
+		query.setParameter("id", personajeDTO.getId());
+		
+		return convertirEntidadDTO(entityManager.find(Personaje.class, personajeDTO.getId()));		
 	}
 
 	/**
@@ -101,8 +124,6 @@ public class GestionarPersonajeBean implements IGestionarPersonajeLocal {
 	@Override
 	public List<PersonajeDTO> consultarPersonajes() throws PersonajeException {
 		logger.debug("Inicio del metodo ConsularPersonaje");
-		
-		
 		try {
 			String query = "SELECT personaje "
 					+ "FROM Personaje personaje";
